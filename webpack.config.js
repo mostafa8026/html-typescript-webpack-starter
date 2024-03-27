@@ -1,18 +1,20 @@
 const path = require("path");
-var HtmlWebpackPlugin = require('html-webpack-plugin')
-
+var HtmlWebpackPlugin = require("html-webpack-plugin");
 
 console.log(__dirname);
 module.exports = {
   entry: "./src/index.ts",
   output: {
     filename: "app.js",
-    path: path.resolve(__dirname, "dist")
+    path: path.resolve(__dirname, "dist"),
   },
   devServer: {
-    port: 9061,
-    static: ['./src', './public'], // both src and output dirs
-    liveReload: true,
+    port: 9062,
+    static: ["./src", "./public"], // both src and output dirs
+    open: true,
+    hot: true,
+    compress: true,
+    historyApiFallback: true,
   },
   mode: "development",
   module: {
@@ -26,12 +28,12 @@ module.exports = {
       },
       {
         test: /\.js$/,
-        enforce: 'pre',
-        use: ['source-map-loader'],
+        enforce: "pre",
+        use: ["source-map-loader"],
       },
       {
         test: /\.tsx?$/,
-        use: 'ts-loader',
+        use: "ts-loader",
         exclude: /node_modules/,
       },
       {
@@ -43,19 +45,20 @@ module.exports = {
           "css-loader",
           // Compiles Sass to CSS
           "sass-loader",
+          "postcss-loader",
         ],
       },
-    ]
+    ],
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
-  }
+    extensions: [".tsx", ".ts", ".js"],
+  },
 };
 
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== "production") {
   module.exports.plugins = (module.exports.plugins || []).concat([
     new HtmlWebpackPlugin({
-      template: './src/index.html'
-    })
-  ])
+      template: "./src/index.html",
+    }),
+  ]);
 }
